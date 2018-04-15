@@ -2,6 +2,8 @@ package xyz.eazyfree.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +21,17 @@ public class UserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @GetMapping("/test" )
+    public void test (){
+        redisTemplate.opsForValue().set("aaa","aaa");
+        stringRedisTemplate.opsForValue().set("aaa","aaa");
+    }
 
     @GetMapping("/users")
     @ResponseBody

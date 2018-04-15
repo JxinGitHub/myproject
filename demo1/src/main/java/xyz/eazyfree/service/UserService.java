@@ -10,4 +10,9 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
+    //接口定义方式实现，用default
+    default void test(){
+
+    }
+
 }
