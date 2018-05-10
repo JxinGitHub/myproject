@@ -10,10 +10,13 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
-    //接口定义方式实现，用default
-    default void test(){
+    User insertByUser(User user);
 
-    }
+    User update(User user);
+
+    User delete(Integer id);
+
+    User findById(Integer id);
 
     //用户登陆验证
     User veriry(String userName);

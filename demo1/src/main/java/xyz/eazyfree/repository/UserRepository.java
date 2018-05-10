@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import xyz.eazyfree.domian.User;
 
 /**
- * Created by ZhaoZhi qiang on 2018/4/9.
+ * 用户持久层操作接口
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {

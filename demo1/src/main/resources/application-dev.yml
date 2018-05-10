@@ -1,0 +1,20 @@
+website:
+  author: eazyfree
+  theme: 一个在演进的网站
+server:
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+#  data:
+#    web:
+#      pageable:
+#        default-page-size: 20
+#        page-parameter: page
+#        size-parameter: pagesize
+#      sort:
+#        sort-parameter: orderBy
+  redis:
+    database: 1
+    port: 6379
+    host: 47.104.212.188
+

@@ -1,0 +1,306 @@
+<div class="box" id="login">
+    <div class="login-header">
+        <h2 class="login-header-h2" th:text="密码登录"></h2>
+    </div>
+
+    <form method="post" id="fm1" th:object="${credential}" action="login">
+
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+            <span th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+        </div>
+
+        <h2 th:utext="#{screen.welcome.instructions}"></h2>
+
+        <section id="rowid" class="row">
+            <!--<label for="username" th:utext="#{screen.welcome.label.netid}"/>-->
+
+            <div th:if="${openIdLocalId}">
+                <strong>
+                    <span th:utext="${openIdLocalId}"/>
+                </strong>
+                <input type="hidden"
+                       id="username"
+                       name="username"
+                       th:value="${openIdLocalId}"/>
+            </div>
+            <div th:unless="${openIdLocalId}">
+                <input class="required"
+                       id="username"
+                       size="25"
+                       tabindex="1"
+                       type="text"
+                       th:disabled="${guaEnabled}"
+                       th:field="*{username}"
+                       th:accesskey="#{screen.welcome.label.netid.accesskey}"
+                       placeholder="请输入手机号"
+                       autocomplete="off"/>
+            </div>
+        </section>
+
+        <section class="row">
+            <!--<label for="password" th:utext="#{screen.welcome.label.password}"/>-->
+
+            <div>
+                <input class="required"
+                       type="password"
+                       id="password"
+                       size="25"
+                       tabindex="2"
+                       th:accesskey="#{screen.welcome.label.password.accesskey}"
+                       th:field="*{password}"
+                       placeholder="请输入密码"
+                       autocomplete="off"/>
+                <span id="capslock-on" style="display:none;">
+                    <p>
+                        <i class="fa fa-exclamation-circle"></i>
+                        <span th:utext="#{screen.capslock.on}"/>
+                    </p>
+                </span>
+            </div>
+        </section>
+
+        <!--    <section class="row check">
+                <p th:if="${passwordManagementEnabled}">
+                    <input type="checkbox" name="doChangePassword" id="doChangePassword" value="true" th:checked="${param.doChangePassword != null}" tabindex="4"/>
+                    <label for="doChangePassword" th:text="#{screen.button.changePassword}"/>
+                </p>
+            </section>
+
+            <section class="row check">
+                <p th:if="${rememberMeAuthenticationEnabled}">
+                    <input type="checkbox" name="rememberMe" id="rememberMe" value="true" tabindex="5"/>
+                    <label for="rememberMe" th:text="#{screen.rememberme.checkbox.title}"/>
+                </p>
+            </section>-->
+
+        <!--<section class="row" th:if="${recaptchaSiteKey}">-->
+        <section class="row g-recaptcha" >
+            <!--<div class="g-recaptcha" th:attr="data-sitekey=${recaptchaSiteKey}"/>-->
+
+            <div>
+                <input class="required"
+                       type="text"
+                       id="recaptcha"
+                       size="25"
+                       tabindex="2"
+                       placeholder="请输入验证码"
+                       autocomplete="off"/>
+              <!--  <input class="btn"
+                       id-="verity-code"
+                       name="submit"
+                       accesskey="l"
+                       th:value="发送验证码"
+                       tabindex="6"
+                       type="image"/>-->
+                <div id="v_container" style="width: 110px;height: 45.33px;"></div>
+            </div>
+
+        </section>
+
+        <section class="row btn-row">
+            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+            <input type="hidden" name="_eventId" value="submit"/>
+            <input type="hidden" name="geolocation"/>
+
+            <input class="btn btn-submit btn-block"
+                   id="btn-submit"
+                   name="submit12"
+                   accesskey="l"
+                   th:value="#{screen.welcome.button.login}"
+                   tabindex="6"
+                   type="button"
+                   onclick="test()"
+                    />
+        </section>
+    </form>
+
+    <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
+        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+        <input type="hidden" name="_eventId" value="resetPassword"/>
+        <span class="fa fa-unlock"></span>
+        <a th:utext="#{screen.pm.button.resetPassword}" href="javascript:void(0)" onclick="$('#passwordManagementForm').submit();"/>
+        <p/>
+    </form>
+
+    <!--    <div th:unless="${passwordManagementEnabled}">
+            <span class="fa fa-question-circle"></span>
+            <span th:utext="#{screen.pm.button.forgotpwd}"/>
+            <p/>
+        </div>-->
+
+    <script type="text/javascript" th:inline="javascript">
+        var i = [[#{screen.welcome.button.loginwip}]]
+        $("#fm1").submit(function () {
+            $(":submit").attr("disabled", true);
+            $(":submit").attr("value", i);
+            return true;
+        });
+    </script>
+    <div th:replace="fragments/loginsidebar"/>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    /**
+     * Created by admin on 2018/4/20.
+     */
+    !(function(window, document) {
+        function GVerify(options) { //创建一个图形验证码对象，接收options对象为参数
+            this.options = { //默认options参数值
+                id: "", //容器Id
+                canvasId: "verifyCanvas", //canvas的ID
+                width: "100", //默认canvas宽度
+                height: "30", //默认canvas高度
+                type: "blend", //图形验证码默认类型blend:数字字母混合类型、number:纯数字、letter:纯字母
+                code: ""
+            }
+
+            if(Object.prototype.toString.call(options) == "[object Object]"){//判断传入参数类型
+                for(var i in options) { //根据传入的参数，修改默认参数值
+                    this.options[i] = options[i];
+                }
+            }else{
+                this.options.id = options;
+            }
+
+            this.options.numArr = "2,3,4,5,6,7,8,9".split(",");
+            this.options.letterArr = getAllLetter();
+
+            this._init();
+            this.refresh();
+        }
+
+        GVerify.prototype = {
+            /**版本号**/
+            version: '1.0.0',
+
+            /**初始化方法**/
+            _init: function() {
+                var con = document.getElementById(this.options.id);
+                var canvas = document.createElement("canvas");
+                this.options.width = con.offsetWidth > 0 ? con.offsetWidth : "100";
+                this.options.height = con.offsetHeight > 0 ? con.offsetHeight : "30";
+                canvas.id = this.options.canvasId;
+                canvas.width = this.options.width;
+                canvas.height = this.options.height;
+                canvas.style.cursor = "pointer";
+                canvas.innerHTML = "您的浏览器版本不支持canvas";
+                con.appendChild(canvas);
+                var parent = this;
+                canvas.onclick = function(){
+                    parent.refresh();
+                }
+            },
+
+            /**生成验证码**/
+            refresh: function() {
+                this.options.code = "";
+                var canvas = document.getElementById(this.options.canvasId);
+                if(canvas.getContext) {
+                    var ctx = canvas.getContext('2d');
+                }else{
+                    return;
+                }
+
+                ctx.textBaseline = "middle";
+
+                ctx.fillStyle = randomColor(180, 240);
+                ctx.fillRect(0, 0, this.options.width, this.options.height);
+
+                if(this.options.type == "blend") { //判断验证码类型
+                    var txtArr = this.options.numArr.concat(this.options.letterArr);
+                } else if(this.options.type == "number") {
+                    var txtArr = this.options.numArr;
+                } else {
+                    var txtArr = this.options.letterArr;
+                }
+
+                for(var i = 1; i <= 4; i++) {
+                    var txt = txtArr[randomNum(0, txtArr.length)];
+                    this.options.code += txt;
+                    ctx.font = randomNum(this.options.height/1.5, this.options.height) + 'px SimHei'; //随机生成字体大小
+                    ctx.fillStyle = randomColor(50, 160); //随机生成字体颜色
+                    ctx.shadowOffsetX = randomNum(-3, 3);
+                    ctx.shadowOffsetY = randomNum(-3, 3);
+                    ctx.shadowBlur = randomNum(-3, 3);
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                    var x = this.options.width / 5 * i;
+                    var y = this.options.height / 2;
+                    var deg = randomNum(-30, 30);
+                    /**设置旋转角度和坐标原点**/
+                    ctx.translate(x, y);
+                    ctx.rotate(deg * Math.PI / 180);
+                    ctx.fillText(txt, 0, 0);
+                    /**恢复旋转角度和坐标原点**/
+                    ctx.rotate(-deg * Math.PI / 180);
+                    ctx.translate(-x, -y);
+                }
+                /**绘制干扰线**/
+                for(var i = 0; i < 4; i++) {
+                    ctx.strokeStyle = randomColor(40, 180);
+                    ctx.beginPath();
+                    ctx.moveTo(randomNum(0, this.options.width), randomNum(0, this.options.height));
+                    ctx.lineTo(randomNum(0, this.options.width), randomNum(0, this.options.height));
+                    ctx.stroke();
+                }
+                /**绘制干扰点**/
+                for(var i = 0; i < this.options.width/4; i++) {
+                    ctx.fillStyle = randomColor(0, 255);
+                    ctx.beginPath();
+                    ctx.arc(randomNum(0, this.options.width), randomNum(0, this.options.height), 1, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            },
+
+            /**验证验证码**/
+            validate: function(code){
+                var code = code.toLowerCase();
+                var v_code = this.options.code.toLowerCase();
+                if(code == v_code){
+                    return true;
+                }else{
+                    this.refresh();
+                    return false;
+                }
+            }
+        }
+        /**生成字母数组**/
+        function getAllLetter() {
+            var letterStr = "a,b,c,d,e,f,g,h,j,k,m,n,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,U,V,W,X,Y,Z";
+            return letterStr.split(",");
+        }
+        /**生成一个随机数**/
+        function randomNum(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+        /**生成一个随机色**/
+        function randomColor(min, max) {
+            var r = randomNum(min, max);
+            var g = randomNum(min, max);
+            var b = randomNum(min, max);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+        window.GVerify = GVerify;
+    })(window, document);
+
+
+    var verifyCode = new GVerify("v_container");
+
+    var html = document.getElementById("fm1").innerHTML;
+    function test() {
+        var res = verifyCode.validate(document.getElementById("recaptcha").value);
+        if (res) {
+            document.getElementById("fm1").submit();
+        } else {
+            document.getElementById("fm1").innerHTML = "<div class='alert alert-danger'><span>验证码输入有误。</span></div>" + html;
+            res.value = "";
+            verifyCode.refresh();
+        }
+
+    }
+
+ /*   document.getElementById("btn-submit").onclick = function (e) {
+
+    }*/
+
+</script>
+

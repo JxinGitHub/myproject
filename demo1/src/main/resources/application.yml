@@ -16,6 +16,8 @@ spring:
     host: 47.104.212.188
     port: 6379
     database: 1
+  profiles:
+    active: dev
 server:
-  port: 80
+  port: 8000
 
