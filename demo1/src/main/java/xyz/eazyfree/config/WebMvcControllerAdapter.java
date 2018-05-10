@@ -60,7 +60,9 @@ public class WebMvcControllerAdapter  implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 
-        registry.addViewController("/index").setViewName("/index");
+        registry.addViewController("/1").setViewName("media/demo");
+        registry.addViewController("/2").setViewName("media/demo2");
+        registry.addViewController("/music").setViewName("media/music");
 
     }
 

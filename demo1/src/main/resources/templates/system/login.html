@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form  id="btn"  action="/login" method="post">
+        <input  type="text"  name="userName" placeholder="请输入用户名"/><br/>
+        <input type="password" name="password" placeholder="请输入密码"/><br/>
+        <input type="email" name="email" placeholder="请输入邮箱"/><br/>
+        <input  type="button" placeholder="登陆" onclick="aaa()" />
+    </form>
+
+
+    <script type="text/javascript" th:inline="javascript">
+
+
+/*        document.getElementById("btn").onclick=function (e) {
+            alert("abc");
+
+            alert("def")
+            document.getElementById("btn").submit();
+        }*/
+        function aaa() {
+            alert("abc");
+            e.preventDefault();
+            alert("def")
+            document.getElementById("btn").submit()
+        }
+    </script>
+
+
+</body>
+</html>

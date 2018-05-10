@@ -9,8 +9,13 @@ spring:
     generate-ddl: true
   thymeleaf:
     cache: false
+    enabled: true
+    mode: HTML5
+
   redis:
     host: 47.104.212.188
     port: 6379
     database: 1
+server:
+  port: 80
 
