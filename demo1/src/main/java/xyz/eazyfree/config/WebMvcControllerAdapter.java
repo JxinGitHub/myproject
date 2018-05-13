@@ -64,6 +64,9 @@ public class WebMvcControllerAdapter  implements WebMvcConfigurer {
         registry.addViewController("/2").setViewName("media/demo2");
         registry.addViewController("/music").setViewName("media/music");
         registry.addViewController("/test1").setViewName("test/test1");
+        registry.addViewController("/echarts").setViewName("test/echartsDemo");
+        registry.addViewController("/echarts1").setViewName("test/echartsMapDemo");
+
 
     }
 

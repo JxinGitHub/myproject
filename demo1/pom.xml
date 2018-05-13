@@ -84,9 +84,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>-->
+
+
+		<!-- Spring Boot Elasticsearch 依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
+        <finalName>myproject</finalName>  <!-- 最后打成的jar名称 -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -1,0 +1,5 @@
+-- insert into `user` VALUES (6,12,SYSDATE(),'email@qq.com','123456','张三')
+-- insert into `user` VALUES (2,12,SYSDATE(),'email@qq.com','123456','张三')
+-- insert into `user` VALUES (3,12,SYSDATE(),'email@qq.com','123456','张三')
+-- insert into `user` VALUES (4,12,SYSDATE(),'email@qq.com','123456','张三')
+-- insert into `user` VALUES (5,12,SYSDATE(),'email@qq.com','123456','张三')
