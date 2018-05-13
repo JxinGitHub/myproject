@@ -1,5 +1,6 @@
 package xyz.eazyfree.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping(value = "/users")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -56,8 +58,9 @@ public class UserController {
                            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
+            log.info("【表单验证未通过】,{}",bindingResult.getFieldError().getDefaultMessage());
             map.addAttribute("action", "create");
-            return "userForm";
+            return "user/form";
         }
 
         userService.insertByUser(user);

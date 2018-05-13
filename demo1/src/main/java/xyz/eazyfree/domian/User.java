@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -31,10 +32,23 @@ public class User implements Serializable{
 
     private String birthday;
 
+    @Min(value = 18,message = "年龄必须要大于18岁")
     private String age;
 
 
     public User() {
     }
 
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
 }
