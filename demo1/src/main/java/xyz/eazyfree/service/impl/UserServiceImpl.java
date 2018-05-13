@@ -8,10 +8,14 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import xyz.eazyfree.domian.User;
+import xyz.eazyfree.enums.ResultEnum;
+import xyz.eazyfree.exception.UserException;
 import xyz.eazyfree.repository.UserRepository;
 import xyz.eazyfree.service.UserService;
 
+import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by ZhaoZhi qiang on 2018/4/9.
@@ -67,4 +71,19 @@ public class UserServiceImpl implements UserService {
     public User veriry(String userName) {
         return repository.findByUserName(userName);
     }
+
+    @Override
+    public void getAge(Integer id) throws Exception{
+        User user = repository.findUserByUserId(id);
+
+        Integer age = Integer.parseInt(user.getAge());
+
+        if (age<18)
+            throw new UserException(ResultEnum.AGE_SMALL);
+        else if (age>100)
+            throw new UserException(ResultEnum.AGE_BIG);
+
+    }
+
+
 }

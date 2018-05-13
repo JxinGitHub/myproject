@@ -21,4 +21,6 @@ public interface UserService {
     //用户登陆验证
     User veriry(String userName);
 
+
+    void getAge(Integer id) throws Exception;
 }

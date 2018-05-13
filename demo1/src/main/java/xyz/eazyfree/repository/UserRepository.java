@@ -12,4 +12,6 @@ import xyz.eazyfree.domian.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByUserName(String userName);
+
+    User findUserByUserId(Integer id);
 }

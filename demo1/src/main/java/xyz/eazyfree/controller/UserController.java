@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import xyz.eazyfree.domian.Result;
 import xyz.eazyfree.domian.User;
 import xyz.eazyfree.service.UserService;
+import xyz.eazyfree.utils.ResultUtil;
 
 import javax.validation.Valid;
 
@@ -52,7 +54,7 @@ public class UserController {
      *    处理 "/users" 的 POST 请求，用来获取用户列表
      *    通过 @ModelAttribute 绑定参数，也通过 @RequestParam 从页面中传递参数
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+/*    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String postUser(ModelMap map,
                            @ModelAttribute @Valid User user,
                            BindingResult bindingResult) {
@@ -66,8 +68,24 @@ public class UserController {
         userService.insertByUser(user);
 
         return "redirect:/users/";
-    }
+    }*/
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Result<User> postUser(ModelMap map,
+                           @ModelAttribute @Valid User user,
+                           BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()) {
+            log.info("【表单验证未通过】,{}",bindingResult.getFieldError().getDefaultMessage());
+            map.addAttribute("action", "create");
+
+            return ResultUtil.error(1,bindingResult.getFieldError().getDefaultMessage());
+        }
+
+        User user1 = userService.insertByUser(user);
+
+        return ResultUtil.success(user);
+    }
 
     /**
      * 显示需要更新用户表单
@@ -107,5 +125,12 @@ public class UserController {
 
         userService.delete(id);
         return "redirect:/users/";
+    }
+
+    @GetMapping(value = "/getAge/{id}")
+    @ResponseBody
+    public void getAge(@PathVariable("id") Integer id) throws Exception {
+        System.out.println(id);
+        userService.getAge(id);
     }
 }
