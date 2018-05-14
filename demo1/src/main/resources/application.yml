@@ -20,6 +20,14 @@ spring:
     database: 1
   profiles:
     active: dev
+  mail:
+    host: smtp.163.com
+    username: eazyfree@163.com
+    password: ZZq930210
+    port: 25
+    default-encoding: UTF-8
+    test-connection: false
+    from-addr: eazyfree@163.com
 server:
   port: 80
 
