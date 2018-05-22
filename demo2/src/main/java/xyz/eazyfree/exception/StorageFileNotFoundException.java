@@ -1,4 +1,4 @@
-package xyz.eazyfree.service;
+package xyz.eazyfree.exception;
 
 public class StorageFileNotFoundException extends StorageException {
 

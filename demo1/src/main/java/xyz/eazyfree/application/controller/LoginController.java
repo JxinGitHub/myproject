@@ -20,6 +20,12 @@ public class LoginController {
         @Autowired
         private UserService userService;
 
+        @GetMapping("/")
+        public String index(){
+
+            return "index";
+        }
+
         @PostMapping("/login")
         private String index( User user){
             User veriry = userService.veriry(user.getUserName());

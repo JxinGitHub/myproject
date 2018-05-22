@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+</head>
+<body>
+
+<form action="/commitInfo2" id="commit-form" enctype="multipart/form-data" method="post">
+
+
+
+    <label class="control-label">地域:</label>
+    <input type="text" name="area" />
+            <input hidden="hidden" type="file" name="file"/>
+
+
+        <button type="submit" id="commit2">提交</button>
+
+</form>
+
+</body>
+</html>
+
+
+<script>
+
+
+    $(function () {
+//    $("#agree").on("change", function () {
+//        if($("#agree").is(':checked')){
+//            $("#commit").removeAttr("disabled");
+//        }else{
+//            $("#commit").attr("disabled", "disabled");
+//        }
+//    })
+
+        $("#commit").on("click", function () {
+            var status = checkInputStatus();
+            if(status == true){
+                var param = {
+                    "username" : $("input[name = 'userName']").val(),
+                    "email" : $("input[name = 'email']").val(),
+                    "telephone" : $("input[name = 'telephone']").val(),
+                    "company" :$("input[name = 'company']").val()
+                };
+                $.ajax({
+                    type:'post',
+                    url:'commitInfo',
+                    data:param,
+                    success:function (res) {
+                        if(res == 1){
+                            alert("提交成功");
+                            window.location.reload();
+                        }else{
+                            alert("提交失败")
+                        }
+                    },
+                    error:function (res) {
+                        alert("网络错误")
+                    }
+                })
+            }else{
+                alert("表单不能有空项!")
+            }
+        })
+
+        function checkInputStatus() {
+            var status = true;
+            if($("input[name = 'userName']").val() == "")
+                status = false;
+            if($("input[name = 'email']").val() == "")
+                status = false;
+            if($("input[name = 'telephone']").val() == "")
+                status = false;
+            if($("input[name = 'company']").val() == "")
+                status = false;
+            return status;
+        }
+
+
+   /*     $("#commit2").on("click", function(){
+
+            $("#commit-form").submit();
+
+            return;
+            var param = {
+                "area" : $("input[name = 'area']").val(),
+                "time" : $("input[name = 'time']").val(),
+                "filename" : $("input[name = 'fileName']").val(),
+                "file" : $("input[name = 'file']").val(),
+
+            };
+            console.log(param);
+            console.log($("#commit-form").serialize())
+            $.ajax({
+                type:"post",
+                url:"commitInfo2",
+                data:param,
+                success:function(res){
+                    console.log(res);
+                    alert("abc")
+
+                }
+            })
+
+
+
+        })*/
+
+        $("#uploadFile").on("click", function(){
+            $("input[type='file']").trigger("click");
+        })
+        $("input[type='file']").on("change", function(){
+            var fileType = $("input[type='file']").val();
+            var test1 = fileType.lastIndexOf("/");  //对路径进行截取
+            var test2 = fileType.lastIndexOf("\\");  //对路径进行截取
+            var test= Math.max(test1, test2)
+            var filename = $("input[name='fileName']").val();
+            $("input[name='fileName']").val(fileType.substring(test)+ filename);
+        })
+    })
+</script>

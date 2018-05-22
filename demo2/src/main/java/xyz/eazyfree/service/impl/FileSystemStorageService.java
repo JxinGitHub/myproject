@@ -1,4 +1,16 @@
-package xyz.eazyfree.service;
+package xyz.eazyfree.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import xyz.eazyfree.exception.StorageException;
+import xyz.eazyfree.exception.StorageFileNotFoundException;
+import xyz.eazyfree.config.StorageProperties;
+import xyz.eazyfree.service.StorageService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,14 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileSystemStorageService implements StorageService {

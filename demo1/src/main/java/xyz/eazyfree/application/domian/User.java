@@ -39,6 +39,13 @@ public class User implements Serializable{
     public User() {
     }
 
+    public User(String userName, String password, String email, String birthday, String age) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.birthday = birthday;
+        this.age = age;
+    }
 
     @Override
     public String toString() {

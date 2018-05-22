@@ -1,4 +1,4 @@
-package xyz.eazyfree.service;
+package xyz.eazyfree.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
